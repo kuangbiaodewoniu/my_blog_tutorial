@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from article.models import Article
 from datetime import datetime
 from django.core import serializers
@@ -15,9 +15,12 @@ def home(request):
 
 
 # 尝试访问数据库
-def detail(request):
-    article_1 = Article.objects.all()[0]
-    return HttpResponse('title= %s, category= %s, content= %s' %(article_1.title, article_1.category, article_1.content))
+def detail(request, id):
+    try:
+        post = Article.objects.get(id=str(id))
+    except Article.DoesNotExsit:
+        raise Http404
+    return render(request, 'post.html', {'post': post})
 
 
 def test(request):
