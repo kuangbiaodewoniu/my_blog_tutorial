@@ -17,11 +17,17 @@ from django.contrib import admin
 from django.conf.urls import url
 from django.urls import path
 from article import views
+from article.views import RSSFeed
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('', views.home, name='home'),
+    url('home/', views.home, name='home'),
     path('detail/', views.detail),
     path('test/', views.test),
     url(r'^(?P<id>\d+)/$', views.detail, name='detail'),
+    path('archives/', views.archives),
+    path('about_me/', views.about_me),
+    url(r'^tag(?P<tag>\w+)/$', views.search_tag, name='search_tag'),
+    url(r'^search/$', views.blog_search, name='search'),
+    url(r'^feed/$', RSSFeed(), name="RSS"),
 ]
